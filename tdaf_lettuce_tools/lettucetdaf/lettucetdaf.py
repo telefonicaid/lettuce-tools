@@ -15,6 +15,7 @@ import argparse
 import shutil
 from datetime import datetime
 import re
+import sys
 
 jira = False
 
@@ -58,7 +59,9 @@ def run_tests(test_type, epics, features, formatedtime, jirasync, tags):
                                 rootepic = root_scheme.pop()
                                 execute_test(root + "/" + files, create_report_dir(formatedtime) + "/" + test_type \
                                              + "-" + rootepic + "--" + files.split(".").pop(0) + ".xml", tags)
-if __name__ == "__main__":
+
+
+def main(args=sys.argv[1:]):
 
     """ Parse arguments provided in letucetdaf.py command"""
     parser = argparse.ArgumentParser()
@@ -112,4 +115,7 @@ if __name__ == "__main__":
         exit(failures)
     except:
         print "There has not been generated any lettuce report"
-        exit (1)
+        exit(1)
+
+    if __name__ == "__main__":
+        main()
