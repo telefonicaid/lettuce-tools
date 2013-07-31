@@ -16,6 +16,6 @@ setup(
     description='TDAF Lettuce Tools',
     packages=packages,
     entry_points={
-        'console_scripts': ['lettucetdaf = tdaf_testcomponents.run_script.lettucetdaf:main'],
+        'console_scripts': ['lettucetdaf = tdaf_lettuce_tools.lettucetdaf.lettucetdaf:main'],
         },
     install_requires=['colorama==0.2.5', 'argparse==1.2.1'])
