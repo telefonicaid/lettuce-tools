@@ -16,6 +16,7 @@ import shutil
 from datetime import datetime
 import re
 import sys
+from lettuce.bin import main as lettucelaunch
 
 jira = False
 
@@ -35,7 +36,8 @@ def create_report_dir(formatedtime):
 
 def execute_test(path, xunit_file, tags):
     global jira
-    os.system("lettuce" + tags + " --with-xunit --xunit-file=" + xunit_file + " " + path + " " + str(jira))
+    #os.system("lettuce" + tags + " --with-xunit --xunit-file=" + xunit_file + " " + path + " " + str(jira))
+    lettucelaunch(["--with-xunit", "--xunit-file=" + xunit_file, path, str(j    ira)])
 
 
 def run_tests(test_type, epics, features, formatedtime, jirasync, tags):
