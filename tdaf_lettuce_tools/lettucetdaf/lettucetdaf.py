@@ -36,8 +36,8 @@ def create_report_dir(formatedtime):
 
 def execute_test(path, xunit_file, tags):
     global jira
-    #os.system("lettuce" + tags + " --with-xunit --xunit-file=" + xunit_file + " " + path + " " + str(jira))
-    lettucelaunch(["--with-xunit", "--xunit-file=" + xunit_file, path])
+    os.system("lettuce" + tags + " --with-xunit --xunit-file=" + xunit_file + " " + path + " " + str(jira))
+    #lettucelaunch(["--with-xunit", "--xunit-file=" + xunit_file, path])
 
 
 def run_tests(test_type, epics, features, formatedtime, jirasync, tags):
