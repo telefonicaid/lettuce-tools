@@ -23,10 +23,6 @@ jira = False
 
 def copyfile(src, dst):
     try:
-        print "SRC"
-        print src
-        print "DST"
-        print dst
         shutil.copy(src, dst)        
     except:
         print "Error in file copy"
@@ -40,8 +36,8 @@ def create_report_dir(formatedtime):
 
 def execute_test(path, xunit_file, tags):
     global jira
-    os.system("lettuce" + tags + " --with-xunit --xunit-file=" + xunit_file + " " + path + " " + str(jira))
-    #lettucelaunch(["--with-xunit", "--xunit-file=" + xunit_file, path, str(jira)])
+    #os.system("lettuce" + tags + " --with-xunit --xunit-file=" + xunit_file + " " + path + " " + str(jira))
+    lettucelaunch(["--with-xunit", "--xunit-file=" + xunit_file, path])
 
 
 def run_tests(test_type, epics, features, formatedtime, jirasync, tags):
