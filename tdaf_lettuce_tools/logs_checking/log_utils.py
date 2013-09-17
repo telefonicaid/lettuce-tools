@@ -12,17 +12,15 @@ been supplied.
 import os
 import re
 from datetime import datetime
-
+from copy import deepcopy
 
 class LogUtils(object):
 
-    DATE = 'DATE'
-    MACHINE = 'MACHINE'
-    COMPONENT = 'COMPONENT'
+    TIMESTAMP = 'TIMESTAMP'
     LEVEL = 'LEVEL'
-    TRACE_ID = 'TRACE_ID'
-    USER_ID = 'USER_ID'
-    OP_TYPE = 'OP_TYPE'
+    CORRELATOR = 'CORRELATOR'
+    TRANSACTION_ID = 'TRANSACTION_ID'
+    OPERATION_TYPE = 'OPERATION_TYPE'
     MESSAGE = 'MESSAGE'
 
     ALLOWED_LEVEL_VALUES = ('FATAL', 'ERROR', 'WARN', 'INFO', 'DEBUG', 'TRACE')
@@ -83,13 +81,11 @@ class LogUtils(object):
             parsed_log = []
             parsed_line = {}
             for line in lines_to_parse:
-                [parsed_line[self.DATE],
-                 parsed_line[self.MACHINE],
-                 parsed_line[self.COMPONENT],
+                [parsed_line[self.TIMESTAMP],
                  parsed_line[self.LEVEL],
-                 parsed_line[self.TRACE_ID],
-                 parsed_line[self.USER_ID],
-                 parsed_line[self.OP_TYPE],
+                 parsed_line[self.CORRELATOR],
+                 parsed_line[self.TRANSACTION_ID],
+                 parsed_line[self.OPERATION_TYPE],
                  parsed_line[self.MESSAGE]] = line.split(' | ')
-                parsed_log.append(parsed_line)
+                parsed_log.append(deepcopy(parsed_line))
             return parsed_log
