@@ -1,0 +1,48 @@
+*.py[co]
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+nosetests.xml
+cover
+.coverage
+.tox
+cover
+coverage.xml
+
+#Translations
+*.mo
+
+# Acceptance tests logs and reports
+testreport
+logs
+
+#Mr Developer
+.mr.developer.cfg
+*.sqlite3
+.project
+.pydevproject
+.idea
+*.db
+*.log
+htmlcov
+.cache
+target
+*.iml
+.DS_Store
+.settings
+.classpath
