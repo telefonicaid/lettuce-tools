@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 '''
 (c) Copyright 2013 Telefonica, I+D. Printed in Spain (Europe). All Rights
 Reserved.
@@ -12,40 +13,46 @@ been supplied.
 import os
 import re
 from datetime import datetime
+from e2e.common.sd_utils import SDUtils
 from copy import deepcopy
+
+sd_utils = SDUtils()
+
 
 class LogUtils(object):
 
-    TIMESTAMP = 'TIMESTAMP'
-    LEVEL = 'LEVEL'
-    CORRELATOR = 'CORRELATOR'
-    TRANSACTION_ID = 'TRANSACTION_ID'
-    OPERATION_TYPE = 'OPERATION_TYPE'
-    MESSAGE = 'MESSAGE'
-
+    LOG_TAG = {'TIME': 'time=', 'LEVEL': 'lvl=', 'UNICA_CORRELATOR': 'corr=', \
+              'TRANSACTION_ID': 'trans=', 'OPERATION_TYPE': 'op=', 'MESSAGE': 'msg='}
+  
     ALLOWED_LEVEL_VALUES = ('FATAL', 'ERROR', 'WARN', 'INFO', 'DEBUG', 'TRACE')
 
     def reset_logs(self, path, logs):
         """
         Delete logs given in param 'logs'.
         """
-        for log in logs:
-            os.remove(path + log)
+        try:
+            for log in logs:
+                os.remove(path + log)
+        except:
+            print "Error deleting logs"
 
     def check_log_format(self, path, log):
         """
         Check that the format of the log entries, the dates and the levels is valid
         """
-        with open(path + log) as log_file:
+
+        with open(path + "service_directory.log") as log_file:
             for line in log_file:
                 try:
-                    [date, machine, component, level, trace_id, user_id, op_type, message] = line.split(' | ')
-                    try:
-                        datetime.strptime(date, "%Y-%m-%d %H:%M:%S.%fZ")
-                    except ValueError:
-                        assert False, "DATE field has bad format: %s" % date
-                    assert level in self.ALLOWED_LEVEL_VALUES, \
-                        "LEVEL field value not allowed: %s" % level
+                    for item in line.split(' | '):
+                        if self.LOG_TAG["TIME"] in item:
+                            try:
+                                datetime.strptime(item.replace(self.LOG_TAG["TIME"], ""), "%Y-%m-%d %H:%M:%S.%fZ")
+                            except ValueError:
+                                assert False, "DATE field has bad format: %s" % item.replace(self.LOG_TAG["TIME"], "")
+                        if self.LOG_TAG["LEVEL"] in item:
+                            assert item.replace(self.LOG_TAG["LEVEL"], "") in self.ALLOWED_LEVEL_VALUES, \
+                            "LEVEL field value not allowed: %s" % item.replace(self.LOG_TAG["LEVEL"], "")
                 except ValueError:
                     assert False, "Log entry has wrong format: %s" % line
 
@@ -57,12 +64,12 @@ class LogUtils(object):
         for log_line in parsed_log:
             result_found = True
             for param in params:
-                if param == self.MESSAGE:
-                    if not (re.search(params[param], log_line[param])):
+                if param == "MESSAGE" or param == "UNICA_CORRELATOR" or param == "TRANSACTION_ID" :
+                    if not (re.search(params[param].split("=")[1], log_line[self.LOG_TAG[param].replace("=", "")])):
                         result_found = False
                         break
                 else:
-                    if not (params[param] == log_line[param]):
+                    if not (params[param].split("=")[1] == log_line[self.LOG_TAG[param].replace("=", "")]):
                         result_found = False
                         break
             if result_found:
@@ -73,19 +80,18 @@ class LogUtils(object):
         """
         Return the entire log or just the last lines as an array of dictionaries
         """
+
         with open(path + log) as log_file:
             if lines != 'all':
                 lines_to_parse = log_file.readlines()[-lines:]
+
             else:
                 lines_to_parse = log_file.readlines()
+
             parsed_log = []
             parsed_line = {}
             for line in lines_to_parse:
-                [parsed_line[self.TIMESTAMP],
-                 parsed_line[self.LEVEL],
-                 parsed_line[self.CORRELATOR],
-                 parsed_line[self.TRANSACTION_ID],
-                 parsed_line[self.OPERATION_TYPE],
-                 parsed_line[self.MESSAGE]] = line.split(' | ')
+                for item in line.split(' | '):
+                    parsed_line[item.split('=')[0]] = item.split('=')[1]
                 parsed_log.append(deepcopy(parsed_line))
             return parsed_log
