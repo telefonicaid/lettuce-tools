@@ -13,10 +13,7 @@ been supplied.
 import os
 import re
 from datetime import datetime
-from e2e.common.sd_utils import SDUtils
 from copy import deepcopy
-
-sd_utils = SDUtils()
 
 
 class LogUtils(object):
@@ -41,13 +38,13 @@ class LogUtils(object):
         Check that the format of the log entries, the dates and the levels is valid
         """
 
-        with open(path + "service_directory.log") as log_file:
+        with open(path + log) as log_file:
             for line in log_file:
                 try:
                     for item in line.split(' | '):
                         if self.LOG_TAG["TIME"] in item:
                             try:
-                                datetime.strptime(item.replace(self.LOG_TAG["TIME"], ""), "%Y-%m-%d %H:%M:%S.%fZ")
+                                datetime.strptime(item.replace(self.LOG_TAG["TIME"], ""), "%Y-%m-%dT%H:%M:%S.%fZ")
                             except ValueError:
                                 assert False, "DATE field has bad format: %s" % item.replace(self.LOG_TAG["TIME"], "")
                         if self.LOG_TAG["LEVEL"] in item:
