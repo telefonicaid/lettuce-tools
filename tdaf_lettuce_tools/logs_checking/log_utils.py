@@ -21,7 +21,7 @@ class LogUtils(object):
     LOG_TAG = {'TIME': 'time=', 'LEVEL': 'lvl=', 'UNICA_CORRELATOR': 'corr=', \
               'TRANSACTION_ID': 'trans=', 'OPERATION_TYPE': 'op=', 'MESSAGE': 'msg='}
   
-    ALLOWED_LEVEL_VALUES = ('FATAL', 'ERROR', 'WARN', 'INFO', 'DEBUG', 'TRACE')
+    ALLOWED_LEVEL_VALUES = ('FATAL', 'ERROR', 'WARN', 'WARNING', 'INFO', 'DEBUG', 'TRACE')
 
     def reset_logs(self, path, logs):
         """
