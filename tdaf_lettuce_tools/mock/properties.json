@@ -1,0 +1,14 @@
+{
+    "environment": {
+        "name": "dev-standalone",
+        "logs_path" : "logs",
+        "python_alias" : "python2.7",
+        "run_test" : "remote"
+    },
+    "mock": {
+        "run_command_params": "mock.py --host 127.0.0.1 --port 8100",
+        "out_file": "logs/mock.out",
+        "err_file": "logs/mock.err",
+        "base_url": "http://127.0.0.1:8100"
+    }
+}

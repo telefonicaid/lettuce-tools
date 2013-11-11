@@ -27,3 +27,11 @@ To use jirasync copy the vanilla file to your .features files root path and conf
 * **log_utils** is a module that can be used in the acceptance tests of any TDAF application, as long as they are developed with Lettuce, to check whether a log file has the right format according to the current specification. 
 
 It can also search for a specific log entry that matches a set of given parameters and values. See the public methods inside the module for details.
+
+### Mock
+
+* **mock** is a module that can be used in the acceptance tests of any TDAF application, as long as they are developed with Lettuce, to implement a configurable http REST mock. 
+
+Its main features are: configure a response on a given endpoint, serve configured responses, maintains checkable list of requests and responses. 
+
+An overridable json properties file is given. A test project is provided as well.
