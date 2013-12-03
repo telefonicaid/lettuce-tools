@@ -13,8 +13,15 @@ been supplied.
 class DatasetUtils(object):
 
     def prepare_plain_data(self, data):
+        """
+        Generate a fixed length data for elements tagged with the text [LENGTH] in lettuce
+        Removes al the data elements tagged with the text [MISSING_PARAM] in lettuce
+        Transformes data from string to primitive type
+        :param data: Lettuce step hash entry
+        :return cleaned data
+        """
         try:
-            data = self.generate_fixed_lenght_params(data)
+            data = self.generate_fixed_length_params(data)
             data = self.remove_missing_params(data)
             data = self.infere_datatypes(data)
             return data
@@ -22,6 +29,11 @@ class DatasetUtils(object):
             return None
 
     def prepare_data(self, step, hash_index):
+        """
+        Retrieve a cleaned data
+        :param hash_index: Lettuce step hash entry
+        :return cleaned data
+        """
         try:
             data = step.hashes[hash_index]
             return self.prepare_plain_data(data)
@@ -32,6 +44,7 @@ class DatasetUtils(object):
         """
         Removes al the data elements tagged with the text [MISSING_PARAM] in lettuce
         :param data: Lettuce step hash entry
+        :return data without not desired params
         """
         try:
             for item in data.keys():
@@ -40,10 +53,11 @@ class DatasetUtils(object):
         finally:
             return data
 
-    def generate_fixed_lenght_params(self, data):
+    def generate_fixed_length_params(self, data):
         """
-        Generate a fixed length data for elements tagged with the text [LENGHT] in lettuce
+        Generate a fixed length data for elements tagged with the text [LENGTH] in lettuce
         :param data: Lettuce step hash entry
+        :return data with the desired params with the desired length
         """
         try:
             seeds = {'STRING': 'a', 'INTEGER': 1}
@@ -58,10 +72,10 @@ class DatasetUtils(object):
         """
         Transformes data from string to primitive type
         :param data: Data to be transformed
+        :return data with the correct type
         """
 
         """ Separate the process of lists, dicts and plain items"""
-
         try:
 
             if isinstance(data, dict):
@@ -116,6 +130,7 @@ class DatasetUtils(object):
         Generates the instances attributes dictionary from a list of keys and values in the lettuce step
         :param key: Attributes keys
         :param data: Attributes values
+        :return: Attributes values
         """
         attributes = {}
 
