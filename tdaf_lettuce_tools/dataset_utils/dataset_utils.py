@@ -17,7 +17,7 @@ class DatasetUtils(object):
         Generate a fixed length data for elements tagged with the text [LENGTH] in lettuce
         Removes al the data elements tagged with the text [MISSING_PARAM] in lettuce
         Transformes data from string to primitive type
-        :param data: Lettuce step hash entry
+        :param data: hash entry
         :return cleaned data
         """
         try:
@@ -28,14 +28,13 @@ class DatasetUtils(object):
         except:
             return None
 
-    def prepare_data(self, step, hash_index):
+    def prepare_data(self, data):
         """
         Retrieve a cleaned data
-        :param hash_index: Lettuce step hash entry
+        :param data: dictionary with entry data
         :return cleaned data
         """
         try:
-            data = step.hashes[hash_index]
             return self.prepare_plain_data(data)
         except:
             return None
