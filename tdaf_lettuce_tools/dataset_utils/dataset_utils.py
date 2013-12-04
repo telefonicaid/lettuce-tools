@@ -12,7 +12,7 @@ been supplied.
 
 class DatasetUtils(object):
 
-    def prepare_plain_data(self, data):
+    def prepare_data(self, data):
         """
         Generate a fixed length data for elements tagged with the text [LENGTH] in lettuce
         Removes al the data elements tagged with the text [MISSING_PARAM] in lettuce
@@ -28,17 +28,6 @@ class DatasetUtils(object):
         except:
             return None
 
-    def prepare_data(self, data):
-        """
-        Retrieve a cleaned data
-        :param data: dictionary with entry data
-        :return cleaned data
-        """
-        try:
-            return self.prepare_plain_data(data)
-        except:
-            return None
-
     def remove_missing_params(self, data):
         """
         Removes al the data elements tagged with the text [MISSING_PARAM] in lettuce
@@ -47,8 +36,8 @@ class DatasetUtils(object):
         """
         try:
             for item in data.keys():
-                        if "[MISSING_PARAM]" in data[item]:
-                            del(data[item])
+                if "[MISSING_PARAM]" in data[item]:
+                    del(data[item])
         finally:
             return data
 
@@ -114,9 +103,6 @@ class DatasetUtils(object):
         Generates the instances attributes dictionary from a list of keys and values in the lettuce step
         :param data: values to be parsed as boolean
         """
-        print "=============SSSSSSSSSSSSS"
-        print "=============SSSSSSSSSSSSS"
-        print "=============SSSSSSSSSSSSS"
         try:
             if "[TRUE]" in data:
                 data = True
@@ -126,36 +112,4 @@ class DatasetUtils(object):
                 data = float(data)
         finally:
             return data
-
-    def generate_attributes(self, attributes_keys, attributes_values):
-        """
-        Generates the instances attributes dictionary from a list of keys and values in the lettuce step
-        :param key: Attributes keys
-        :param data: Attributes values
-        :return: Attributes values
-        """
-        attributes = {}
-
-        try:
-            if "[MALFORMED]" in attributes_keys:
-                attributes = [""]
-                return attributes
-
-            if "ARRAY_WITH_ITEMS_" in attributes_keys:
-                length = attributes_keys[1:len(attributes_keys) - 1].split("_WITH_ITEMS_")[1]
-                fixed_attributes = {}
-                for value in range(0, int(length)):
-                    fixed_attributes[str(value)] = str(value)
-                return fixed_attributes
-            else:
-                try:
-                    attributes = dict(zip(attributes_keys.split(","),\
-                                        attributes_values.split(",")))
-                    return self.infere_datatypes(attributes)
-                except:
-                    #attributes are a single value that has been infered. Just zip it
-                    attributes = dict(zip([attributes_keys], [attributes_values]))
-                    return self.infere_datatypes(attributes)
-        except:
-            return attributes
 
