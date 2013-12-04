@@ -83,12 +83,7 @@ class DatasetUtils(object):
                         data[item] = int(data[item])
                     except:
                         try:
-                            if "[TRUE]" in data[item]:
-                                data[item] = True
-                            if "[FALSE]" in data[item]:
-                                data[item] = False
-                            else:
-                                data[item] = float(data[item])
+                            _get_item_with_type(data[item])
                         except:
                             continue
 
@@ -98,12 +93,7 @@ class DatasetUtils(object):
                         data[item] = int(data[item])
                     except:
                         try:
-                            if "[TRUE]" in data[item]:
-                                data[item] = True
-                            if "[FALSE]" in data[item]:
-                                data[item] = False
-                            else:
-                                data[item] = float(data[item])
+                            _get_item_with_type(data[item])
                         except:
                             continue
 
@@ -113,14 +103,24 @@ class DatasetUtils(object):
                     data = int(data)
                 except:
                         try:
-                            if "[TRUE]" in data:
-                                data = True
-                            if "[FALSE]" in data:
-                                data = False
-                            else:
-                                data = float(data)
+                            _get_item_with_type(data)
                         except:
                             return data
+        finally:
+            return data
+
+    def _get_item_with_type(self, data):
+        """
+        Generates the instances attributes dictionary from a list of keys and values in the lettuce step
+        :param data: values to be parsed as boolean
+        """
+        try:
+            if "[TRUE]" in data:
+                data = True
+            if "[FALSE]" in data:
+                data = False
+            else:
+                data = float(data)
         finally:
             return data
 
