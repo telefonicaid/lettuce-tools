@@ -114,6 +114,9 @@ class DatasetUtils(object):
         Generates the instances attributes dictionary from a list of keys and values in the lettuce step
         :param data: values to be parsed as boolean
         """
+        print "=============SSSSSSSSSSSSS"
+        print "=============SSSSSSSSSSSSS"
+        print "=============SSSSSSSSSSSSS"
         try:
             if "[TRUE]" in data:
                 data = True
