@@ -53,8 +53,9 @@ class MockUtils(object):
     def set_invalid_data(self, type,  request, status_code, delay=None):
         """
         Configure the mock to give a bad answer to a request.
+        :param type: type of invalid data to be sent.
         :param request: Path in the request line that will trigger the response.
-        :param type: Status code of the response to be sent.
+        :param status_code: Status code of the response to be sent.
         :param delay: Time the mock should wait before sending the response.
         """
         if type == "[BAD_DATA]":
@@ -96,7 +97,7 @@ class MockUtils(object):
         Configure the mock to give a specific answer to a request.
         :param step: Current Lettuce step.
         :param request: Path in the request line that will trigger the response.
-        :param type: Status code of the response to be sent.
+        :param status_code: Status code of the response to be sent.
         :param response_index: Index of the data to be sent as response content.
         :param delay: Time the mock should wait before sending the response.
         """
@@ -106,14 +107,9 @@ class MockUtils(object):
             """If the index is provided, set just the row specified as body"""
             body = step.hashes[int(response_index)]
             """ Format the step values when they contain json values """
-            """ If attributes in expected body, transform them into json """
+            """ If json in expected body, transform them into json """
             try:
-                body["attributes"] = json.loads(body["attributes"])
-            except:
-                pass
-            """ If binding tules in expected body, transform them into json """
-            try:
-                body["binding_rules"] = json.loads(body["binding_rules"])
+                body["[JSON]"] = json.loads(body["[JSON]"])
             except:
                 pass
         else:
@@ -122,14 +118,9 @@ class MockUtils(object):
 
             for item in body:
                 """ Format the step values when they contain json values """
-                """ If attributes in expected body, transform them into json """
+                """ If json in expected body, transform them into json """
                 try:
-                    item["attributes"] = json.loads(item["attributes"])
-                except:
-                    pass
-                """ If binding tules in expected body, transform them into json """
-                try:
-                    item["binding_rules"] = json.loads(item["binding_rules"])
+                    item["[JSON]"] = json.loads(item["[JSON]"])
                 except:
                     pass
 
@@ -158,7 +149,8 @@ class MockUtils(object):
         """
         Validates de data stores in the mock .
         :param request: URL template to set the corresponding values.
-        :param data: Values to be validated
+        :param params: query parameters to be validated.
+        :param body_data: Values to be validated
         """
         url = "".join([world.config["mock"]["base_url"], "/mock_configurations/", request])
         try:
@@ -167,9 +159,8 @@ class MockUtils(object):
             assert False, "Error getting stored info from mock."
 
         try:
-            world.mock_json = response.json()
-            world.mock_params = response.json()["query_params"]
-            world.mock_body = response.json()["body"]
+            mock_params = response.json()["query_params"]
+            mock_body = response.json()["body"]
         except:
             assert False, "Error getting stored info from mock."
 
@@ -177,28 +168,23 @@ class MockUtils(object):
 
         """ params validation """
         if params != None:
-            assert len(params) == len(world.mock_params.split("&")), \
-            "The number of expected and send params is different. Expected %s Received %s" % (params, world.mock_params.split("&"))
+            assert len(params) == len(mock_params.split("&")), \
+            "The number of expected and send params is different. Expected %s Received %s" % (params, mock_params.split("&"))
 
-            for item in world.mock_params.split("&"):
+            for item in mock_params.split("&"):
                 assert item in params.values(), \
             "Item %s was not found in expected params %s" % (item, params)
 
         if body_data != None:
-            """ If attributes in expected body, transform them into json """
+            """ If json in expected body, transform them into json """
             try:
-                body_data["attributes"] = json.loads(body_data["attributes"])
-            except:
-                pass
-            """ If binding tules in expected body, transform them into json """
-            try:
-                body_data["binding_rules"] = json.loads(body_data["binding_rules"])
+                body_data["[JSON]"] = json.loads(body_data["[JSON]"])
             except:
                 pass
 
-            assert len(body_data) == len(json.loads(world.mock_body)), \
-            "The number of expected and send params is different. Expected %s Received %s" % (body_data,json.loads(world.mock_body))
+            assert len(body_data) == len(json.loads(mock_body)), \
+            "The number of expected and send params is different. Expected %s Received %s" % (body_data,json.loads(mock_body))
 
 
-            assert body_data == json.loads(world.mock_body), \
-            "The expected body and received body are different. Expected %s, Received %s" % (body_data, world.mock_body)
+            assert body_data == json.loads(mock_body), \
+            "The expected body and received body are different. Expected %s, Received %s" % (body_data, mock_body)

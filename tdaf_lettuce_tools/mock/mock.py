@@ -30,7 +30,6 @@ class RequestHandler(BaseHTTPRequestHandler):
         """
         if "mock_configurations" in self.path:
             resource = self.path.replace("/mock_configurations", "")
-            print resource
             self.recover_request(resource)
 
         elif "queues" in self.path:
@@ -172,7 +171,6 @@ class RequestHandler(BaseHTTPRequestHandler):
             body = dict()
             body.update({"requests": self.responses_qeues})
             body.update({"responses": self.requests_qeues})
-            print body
             self.wfile.write(json.dumps(body))
         except:
             self.send_response(500)
