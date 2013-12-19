@@ -114,10 +114,10 @@ def main(args=sys.argv[1:]):
 
     try:
         failures = ResultChecker(timestamp).get_results()  # Create lettuce reports
-        exit(failures)
     except:
         print "There has not been generated any lettuce report"
         exit(1)
+	exit(failures)
 
     if __name__ == "__main__":
         main()
