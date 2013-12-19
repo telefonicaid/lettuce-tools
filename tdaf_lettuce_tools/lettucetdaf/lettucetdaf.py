@@ -117,7 +117,7 @@ def main(args=sys.argv[1:]):
     except:
         print "There has not been generated any lettuce report"
         exit(1)
-	exit(failures)
+    exit(failures)
 
     if __name__ == "__main__":
         main()
