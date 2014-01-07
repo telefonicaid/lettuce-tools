@@ -41,6 +41,20 @@ class DatasetUtils(object):
         finally:
             return data
 
+    def generate_fixed_length_param(self, param):
+        """
+        Generate a fixed length param for elements tagged with the text [LENGTH] in lettuce
+        :param param: Lettuce param
+        :return param with the desired length
+        """
+        try:
+            seeds = {'STRING': 'a', 'INTEGER': 1}
+            if "_WITH_LENGTH_" in param:
+                seed, length = param[1:len(data[item]) - 1].split("_WITH_LENGTH_")
+                param = seeds[seed] * int(length)
+        finally:
+            return param
+
     def generate_fixed_length_params(self, data):
         """
         Generate a fixed length data for elements tagged with the text [LENGTH] in lettuce
