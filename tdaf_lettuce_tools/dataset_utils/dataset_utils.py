@@ -50,7 +50,7 @@ class DatasetUtils(object):
         try:
             seeds = {'STRING': 'a', 'INTEGER': 1}
             if "_WITH_LENGTH_" in param:
-                seed, length = param[1:- 1].split("_WITH_LENGTH_")
+                seed, length = param[1:-1].split("_WITH_LENGTH_")
                 param = seeds[seed] * int(length)
         finally:
             return param
@@ -65,8 +65,7 @@ class DatasetUtils(object):
             seeds = {'STRING': 'a', 'INTEGER': 1}
             for item in data.keys():
                 if "_WITH_LENGTH_" in data[item]:
-                    seed, length = data[item][1:len(data[item]) - 1].split("_WITH_LENGTH_")
-                    data[item] = seeds[seed] * int(length)
+                    data[item] = generate_fixed_length_param(data[item])
         finally:
             return data
 
