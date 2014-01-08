@@ -62,10 +62,8 @@ class DatasetUtils(object):
         :return data with the desired params with the desired length
         """
         try:
-            seeds = {'STRING': 'a', 'INTEGER': 1}
             for item in data.keys():
-                if "_WITH_LENGTH_" in data[item]:
-                    data[item] = generate_fixed_length_param(data[item])
+                data[item] = generate_fixed_length_param(data[item])
         finally:
             return data
 
