@@ -23,7 +23,7 @@ jira = False
 
 def copyfile(src, dst):
     try:
-        shutil.copy(src, dst)        
+        shutil.copy(src, dst)
     except:
         print "Error in file copy"
 

@@ -20,7 +20,7 @@ class LogUtils(object):
 
     LOG_TAG = {'TIME': 'time=', 'LEVEL': 'lvl=', 'UNICA_CORRELATOR': 'corr=', \
               'TRANSACTION_ID': 'trans=', 'OPERATION_TYPE': 'op=', 'MESSAGE': 'msg='}
-  
+
     ALLOWED_LEVEL_VALUES = ('FATAL', 'ERROR', 'WARN', 'WARNING', 'INFO', 'DEBUG', 'TRACE')
 
     def reset_logs(self, path, logs):
@@ -61,7 +61,7 @@ class LogUtils(object):
         for log_line in parsed_log:
             result_found = True
             for param in params:
-                if param == "MESSAGE" or param == "UNICA_CORRELATOR" or param == "TRANSACTION_ID" :
+                if param == "MESSAGE" or param == "UNICA_CORRELATOR" or param == "TRANSACTION_ID":
                     if not (re.search(params[param].split("=")[1], log_line[self.LOG_TAG[param].replace("=", "")])):
                         result_found = False
                         break
