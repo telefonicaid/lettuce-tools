@@ -81,9 +81,10 @@ class DatasetUtils(object):
 
     def infere_datatypes(self, data):
         """
-        Transforms data from string to primitive type
-        :param data: Data to be transformed
-        :return data with the correct type
+        Process the input data and replace the values in string format with the
+        the appropriate primitive type, based on its content
+        :param data: list of items, dict of items or single item
+        :return processed list of items, dict of items or single item
         """
 
         """ Separate the process of lists, dicts and plain items"""
@@ -104,8 +105,9 @@ class DatasetUtils(object):
 
     def _get_item_with_type(self, data):
         """
-        Generates the instances attributes dictionary from a list of keys and values in the lettuce step
-        :param data: values to be parsed as boolean
+        Transform data from string to primitive type
+        :param data: Data to be transformed
+        :return data with the correct type
         """
         if "[TRUE]" in data:  # boolean
             data = True
