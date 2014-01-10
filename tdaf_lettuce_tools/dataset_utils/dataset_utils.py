@@ -46,7 +46,7 @@ class DatasetUtils(object):
     def generate_fixed_length_param(self, param):
         """
         Generate a fixed length param if the elements matches the expression
-        [<type>_WITH_LENGTH_<length>] in lettuce. E.g.: [STRING_WITH_LENTGH_15]
+        [<type>_WITH_LENGTH_<length>] in lettuce. E.g.: [STRING_WITH_LENGTH_15]
         :param param: Lettuce param
         :return param with the desired length
         """
@@ -57,8 +57,8 @@ class DatasetUtils(object):
                     seed, length = param[1:-1].split("_ARRAY_WITH_LENGTH_")
                     param = list(seeds[seed] for x in xrange(int(length)))
                 elif "JSON_WITH_LENGTH_" in param:
-                    length = param[1:-1].split("JSON_WITH_LENGTH_")[1]
-                    param = dict((str(x), str(x)) for x in xrange(int(length)))
+                    length = int(param[1:-1].split("JSON_WITH_LENGTH_")[1])
+                    param = dict((str(x), str(x)) for x in xrange(length))
                 else:
                     seeds = {'STRING': 'a', 'INTEGER': 1}
                     seed, length = param[1:-1].split("_WITH_LENGTH_")
@@ -91,12 +91,12 @@ class DatasetUtils(object):
         try:
 
             if isinstance(data, dict):  # dict of items
-                for item in data:
-                    data[item] = self._get_item_with_type(data[item])
+                for key in data:
+                    data[key] = self._get_item_with_type(data[key])
 
             elif isinstance(data, list):  # list of items
-                for pos in range(len(data)):
-                    data[pos] = self._get_item_with_type(data[pos])
+                for index in range(len(data)):
+                    data[index] = self._get_item_with_type(data[index])
 
             else:  # single item
                 data = self._get_item_with_type(data)
