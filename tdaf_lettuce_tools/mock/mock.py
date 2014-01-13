@@ -30,13 +30,14 @@ class RequestHandler(BaseHTTPRequestHandler):
         if "mock_configurations" in self.path:
             resource = self.path.replace("/mock_configurations", "")
             self.recover_request(resource)
+            self.log_message("%s", "GET con mock config")
 
         elif "queues" in self.path:
             self.get_queues()
 
         else:
             """Otherwise, serve the previously uploaded content."""
-            self.store_request(self.path)
+            self.store_request(self.path, "GET")
             self.serve_response()
 
     def do_DELETE(self):
@@ -57,7 +58,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         else:
             """Otherwise, serve the previously uploaded content."""
-            self.store_request(self.path)
+            self.store_request(self.path, "POST")
             self.serve_response()
 
     def recover_request(self, resource):
@@ -78,7 +79,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         ."""
         self.wfile.write(json.dumps(request_info))
 
-    def store_request(self, resource):
+    def store_request(self, resource, method):
         """
         Stores the information provided in the request
         """
@@ -95,7 +96,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             if len(resource.split("?")) > 1:
                 query_params = resource.split("?").pop()
 
-        request_data = {"body": body, "query_params": query_params, "content_type": content_type}
+        request_data = {"body": body, "query_params": query_params, "content_type": content_type, "method": method}
 
         """Add the content to the configured resource queue"""
         if resource.split("?").pop(0) not in self.requests_qeues:

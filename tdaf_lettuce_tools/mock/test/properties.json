@@ -6,7 +6,7 @@
         "run_test" : "remote"
     },
     "mock": {
-        "run_command_params": "mock.py --host 127.0.0.1 --port 8100",
+        "run_command_params": "mock/mock.py --host 127.0.0.1 --port 8100",
         "out_file": "logs/mock.out",
         "err_file": "logs/mock.err",
         "base_url": "http://127.0.0.1:8100"

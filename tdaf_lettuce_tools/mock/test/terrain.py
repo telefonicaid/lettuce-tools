@@ -11,7 +11,7 @@ been supplied.
 '''
 from lettuce import before, after
 from test_utils import TestUtils
-from mock_utils import MockUtils
+from mock.mock_utils import MockUtils
 
 test_utils = TestUtils()
 mock_utils = MockUtils()

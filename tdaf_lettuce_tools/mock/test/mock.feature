@@ -8,7 +8,7 @@ Feature: TDAF Mock tests
         When I configure the mock in <url> to answer with <status_code> and <body>
         And I request the mock with a GET to <url>
         Then I receive <status_code> and <body>
-        And I check the mock has been called in <url>
+        And I check the mock has been called in <url> with a GET
         And the mock queues are empty
         Examples:
             | url   | status_code | body             |
