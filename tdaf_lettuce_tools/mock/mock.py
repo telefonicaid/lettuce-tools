@@ -41,12 +41,20 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.serve_response()
 
     def do_DELETE(self):
-
-        self.do_GET()
+        """
+        Handle the DELETE requests, serving the previously uploaded content.
+        """
+        """Serve the previously uploaded content."""
+        self.store_request(self.path, "DELETE")
+        self.serve_response()
 
     def do_PUT(self):
-
-        self.do_POST()
+        """
+        Handle the PUT requests, serving the previously uploaded content.
+        """
+        """Serve the previously uploaded content."""
+        self.store_request(self.path, "PUT")
+        self.serve_response()
 
     def do_POST(self):
         """
@@ -181,9 +189,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Mock server for REST APIs")
     parser.add_argument("--host", type=str, nargs="?", default="127.0.0.1",
-        help="Host where to start the mock (127.0.0.1 by default)")
+                        help="Host where to start the mock (127.0.0.1 by default)")
     parser.add_argument("--port", type=int, nargs="?", default=8000,
-        help="Port where to start the mock (8000 by default)")
+                        help="Port where to start the mock (8000 by default)")
     args = parser.parse_args()
     try:
         mock_server = HTTPServer((args.host, args.port), RequestHandler)
