@@ -28,11 +28,12 @@ def auto_expand(f):
 
 
 @auto_expand
-def prueba(arg1, arg2):
+def prueba(arg1, arg2, arg3):
     print 'arg1', arg1
     print 'arg2', arg2
+    print 'arg3', arg3
 
 
 if __name__ == '__main__':
-    prueba('[STRING_WITH_LENGTH_5]', arg2 = '[STRING_WITH_LENGTH_10]')
+    prueba('[STRING_WITH_LENGTH_5]', arg3 = 'standard chain', arg2 = '[STRING_WITH_LENGTH_10]')
 
