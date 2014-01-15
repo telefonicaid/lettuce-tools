@@ -30,22 +30,31 @@ class RequestHandler(BaseHTTPRequestHandler):
         if "mock_configurations" in self.path:
             resource = self.path.replace("/mock_configurations", "")
             self.recover_request(resource)
+            self.log_message("%s", "GET con mock config")
 
         elif "queues" in self.path:
             self.get_queues()
 
         else:
             """Otherwise, serve the previously uploaded content."""
-            self.store_request(self.path)
+            self.store_request(self.path, "GET")
             self.serve_response()
 
     def do_DELETE(self):
-
-        self.do_GET()
+        """
+        Handle the DELETE requests, serving the previously uploaded content.
+        """
+        """Serve the previously uploaded content."""
+        self.store_request(self.path, "DELETE")
+        self.serve_response()
 
     def do_PUT(self):
-
-        self.do_POST()
+        """
+        Handle the PUT requests, serving the previously uploaded content.
+        """
+        """Serve the previously uploaded content."""
+        self.store_request(self.path, "PUT")
+        self.serve_response()
 
     def do_POST(self):
         """
@@ -57,7 +66,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         else:
             """Otherwise, serve the previously uploaded content."""
-            self.store_request(self.path)
+            self.store_request(self.path, "POST")
             self.serve_response()
 
     def recover_request(self, resource):
@@ -78,7 +87,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         ."""
         self.wfile.write(json.dumps(request_info))
 
-    def store_request(self, resource):
+    def store_request(self, resource, method):
         """
         Stores the information provided in the request
         """
@@ -95,7 +104,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             if len(resource.split("?")) > 1:
                 query_params = resource.split("?").pop()
 
-        request_data = {"body": body, "query_params": query_params, "content_type": content_type}
+        request_data = {"body": body, "query_params": query_params, "content_type": content_type, "method": method}
 
         """Add the content to the configured resource queue"""
         if resource.split("?").pop(0) not in self.requests_qeues:
@@ -180,9 +189,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Mock server for REST APIs")
     parser.add_argument("--host", type=str, nargs="?", default="127.0.0.1",
-        help="Host where to start the mock (127.0.0.1 by default)")
+                        help="Host where to start the mock (127.0.0.1 by default)")
     parser.add_argument("--port", type=int, nargs="?", default=8000,
-        help="Port where to start the mock (8000 by default)")
+                        help="Port where to start the mock (8000 by default)")
     args = parser.parse_args()
     try:
         mock_server = HTTPServer((args.host, args.port), RequestHandler)

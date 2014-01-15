@@ -21,7 +21,7 @@ class TestUtils(object):
         Parse the JSON configuration file located in the execution folder and
         store the resulting dictionary in the world.
         """
-        with open("properties.json") as config_file:
+        with open("mock/test/properties.json") as config_file:
             world.config = json.load(config_file)
 
         """
