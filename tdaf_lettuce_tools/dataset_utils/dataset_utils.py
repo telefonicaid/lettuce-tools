@@ -9,6 +9,8 @@ consent of Telefonica I+D or in accordance with the terms and conditions
 stipulated in the agreement/contract under which the program(s) have
 been supplied.
 '''
+import json
+
 
 class DatasetUtils(object):
 
@@ -30,7 +32,7 @@ class DatasetUtils(object):
 
     def remove_missing_params(self, data):
         """
-        Removes al the data elements tagged with the text [MISSING_PARAM] in lettuce
+        Removes all the data elements tagged with the text [MISSING_PARAM] in lettuce
         :param data: Lettuce step hash entry
         :return data without not desired params
         """
@@ -43,84 +45,82 @@ class DatasetUtils(object):
 
     def generate_fixed_length_param(self, param):
         """
-        Generate a fixed length param for elements tagged with the text [LENGTH] in lettuce
+        Generate a fixed length param if the elements matches the expression
+        [<type>_WITH_LENGTH_<length>] in lettuce. E.g.: [STRING_WITH_LENGTH_15]
         :param param: Lettuce param
         :return param with the desired length
         """
         try:
-            seeds = {'STRING': 'a', 'INTEGER': 1}
             if "_WITH_LENGTH_" in param:
-                seed, length = param[1:-1].split("_WITH_LENGTH_")
-                param = seeds[seed] * int(length)
+                if "_ARRAY_WITH_LENGTH_" in param:
+                    seeds = {'STRING': 'a', 'INTEGER': 1}
+                    seed, length = param[1:-1].split("_ARRAY_WITH_LENGTH_")
+                    param = list(seeds[seed] for x in xrange(int(length)))
+                elif "JSON_WITH_LENGTH_" in param:
+                    length = int(param[1:-1].split("JSON_WITH_LENGTH_")[1])
+                    param = dict((str(x), str(x)) for x in xrange(length))
+                else:
+                    seeds = {'STRING': 'a', 'INTEGER': 1}
+                    seed, length = param[1:-1].split("_WITH_LENGTH_")
+                    param = seeds[seed] * int(length)
         finally:
             return param
 
     def generate_fixed_length_params(self, data):
         """
-        Generate a fixed length data for elements tagged with the text [LENGTH] in lettuce
+        Generate a fixed length data for the elements that match the expression
+        [<type>_WITH_LENGTH_<length>] in lettuce. E.g.: [STRING_WITH_LENTGH_15]
         :param data: Lettuce step hash entry
         :return data with the desired params with the desired length
         """
         try:
             for item in data.keys():
-                data[item] = generate_fixed_length_param(data[item])
+                data[item] = self.generate_fixed_length_param(data[item])
         finally:
             return data
 
     def infere_datatypes(self, data):
         """
-        Transformes data from string to primitive type
-        :param data: Data to be transformed
-        :return data with the correct type
+        Process the input data and replace the values in string format with the
+        the appropriate primitive type, based on its content
+        :param data: list of items, dict of items or single item
+        :return processed list of items, dict of items or single item
         """
 
         """ Separate the process of lists, dicts and plain items"""
         try:
 
-            if isinstance(data, dict):
-                for item in data:
-                    try:
-                        data[item] = int(data[item])
-                    except:
-                        try:
-                            _get_item_with_type(data[item])
-                        except:
-                            continue
+            if isinstance(data, dict):  # dict of items
+                for key in data:
+                    data[key] = self._get_item_with_type(data[key])
 
-            if isinstance(data, list):
-                for item in range(1, len(data)):
-                    try:
-                        data[item] = int(data[item])
-                    except:
-                        try:
-                            _get_item_with_type(data[item])
-                        except:
-                            continue
+            elif isinstance(data, list):  # list of items
+                for index in range(len(data)):
+                    data[index] = self._get_item_with_type(data[index])
 
-            if not isinstance(data, list) and not isinstance(data, dict):
-                """ Assumption of single item """
-                try:
-                    data = int(data)
-                except:
-                        try:
-                            _get_item_with_type(data)
-                        except:
-                            return data
+            else:  # single item
+                data = self._get_item_with_type(data)
         finally:
             return data
 
     def _get_item_with_type(self, data):
         """
-        Generates the instances attributes dictionary from a list of keys and values in the lettuce step
-        :param data: values to be parsed as boolean
+        Transform data from string to primitive type
+        :param data: Data to be transformed
+        :return data with the correct type
         """
-        try:
-            if "[TRUE]" in data:
-                data = True
-            if "[FALSE]" in data:
-                data = False
-            else:
-                data = float(data)
-        finally:
-            return data
-
+        if "[TRUE]" in data:  # boolean
+            data = True
+        elif "[FALSE]" in data:  # boolean
+            data = False
+        elif data.startswith("{") and data.endswith("}"):  # json
+            data = json.loads(data)
+        else:
+            try:  # maybe an int
+                data = int(data)
+            except:
+                try:  # maybe a float
+                    data = float(data)
+                except:
+                    pass  # if no condition matches, leave the data unchanged
+        return data

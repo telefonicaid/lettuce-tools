@@ -68,9 +68,9 @@ class ResultChecker(object):
         self.us = len(self.dict)
         freq = freq[1:]
         print "Total US: %s Total TestCases: %s TestCases frequency: %s " % (self.us, self.testcases, freq)
-        print "TestCases/US:" 
+        print "TestCases/US:"
         for item in self.dict:
-            print item+":"+str(self.dict[item])
+            print item + ":" + str(self.dict[item])
         print "*********************************"
         if self.test == 0:
             return 1
@@ -81,4 +81,3 @@ class ResultChecker(object):
 if __name__ == "__main__":
     checker = ResultChecker()
     checker.get_results()
-

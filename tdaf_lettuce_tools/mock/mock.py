@@ -9,7 +9,6 @@ consent of Telefonica I+D or in accordance with the terms and conditions
 stipulated in the agreement/contract under which the program(s) have
 been supplied.
 '''
-from lettuce import world
 import json
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import time
@@ -92,8 +91,8 @@ class RequestHandler(BaseHTTPRequestHandler):
             content_length = int(self.headers.getheader('Content-Length'))
             body = self.rfile.read(content_length)
         except:
-            """ No body means that it could be a GET request """ 
-            if len(resource.split("?"))>1:
+            """ No body means that it could be a GET request """
+            if len(resource.split("?")) > 1:
                 query_params = resource.split("?").pop()
 
         request_data = {"body": body, "query_params": query_params, "content_type": content_type}
@@ -195,4 +194,3 @@ if __name__ == "__main__":
         print "Mock stopped."
     except Exception as e:
         print "Unexpected error: " + str(e)
-

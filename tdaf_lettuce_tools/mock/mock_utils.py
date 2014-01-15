@@ -10,7 +10,6 @@ stipulated in the agreement/contract under which the program(s) have
 been supplied.
 '''
 from lettuce import world
-from string import Template
 import subprocess
 import time
 import requests
@@ -50,7 +49,7 @@ class MockUtils(object):
         else:
             return False
 
-    def set_invalid_data(self, type,  request, status_code, delay=None):
+    def set_invalid_data(self, type, request, status_code, delay=None):
         """
         Configure the mock to give a bad answer to a request.
         :param type: type of invalid data to be sent.
@@ -169,7 +168,8 @@ class MockUtils(object):
         """ params validation """
         if params != None:
             assert len(params) == len(mock_params.split("&")), \
-            "The number of expected and send params is different. Expected %s Received %s" % (params, mock_params.split("&"))
+            "The number of expected and send params is different. Expected %s Received %s" \
+            % (params, mock_params.split("&"))
 
             for item in mock_params.split("&"):
                 assert item in params.values(), \
@@ -183,8 +183,9 @@ class MockUtils(object):
                 pass
 
             assert len(body_data) == len(json.loads(mock_body)), \
-            "The number of expected and send params is different. Expected %s Received %s" % (body_data,json.loads(mock_body))
-
+            "The number of expected and send params is different. Expected %s Received %s" \
+            % (body_data, json.loads(mock_body))
 
             assert body_data == json.loads(mock_body), \
-            "The expected body and received body are different. Expected %s, Received %s" % (body_data, mock_body)
+            "The expected body and received body are different. Expected %s, Received %s" \
+            % (body_data, mock_body)
