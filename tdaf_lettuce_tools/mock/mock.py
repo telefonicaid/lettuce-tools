@@ -25,14 +25,16 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """
-        Handle the GET requests, serving the previously uploaded content.
+        Handle the GET requests.
         """
         if "mock_configurations" in self.path:
+            """Send the oldest request received in the path specified."""
             resource = self.path.replace("/mock_configurations", "")
             self.recover_request(resource)
             self.log_message("%s", "GET con mock config")
 
         elif "queues" in self.path:
+            """Send the current queues for requests and responses."""
             self.get_queues()
 
         else:
@@ -44,9 +46,13 @@ class RequestHandler(BaseHTTPRequestHandler):
         """
         Handle the DELETE requests, serving the previously uploaded content.
         """
-        """Serve the previously uploaded content."""
-        self.store_request(self.path, "DELETE")
-        self.serve_response()
+        if "queues" in self.path:
+            """Empty the current queues for requests and responses."""
+            self.empty_queues()
+        else:
+            """Otherwise, serve the previously uploaded content."""
+            self.store_request(self.path, "DELETE")
+            self.serve_response()
 
     def do_PUT(self):
         """
@@ -184,6 +190,13 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.send_response(500)
             self.end_headers()
             return
+
+    def empty_queues(self):
+        """Empty the requests and responses queues."""
+        self.responses_qeues = dict()
+        self.requests_qeues = dict()
+        self.send_response(204)
+        self.end_headers()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
