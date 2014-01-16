@@ -44,7 +44,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def do_DELETE(self):
         """
-        Handle the DELETE requests, serving the previously uploaded content.
+        Handle the DELETE requests.
         """
         if "queues" in self.path:
             """Empty the current queues for requests and responses."""
@@ -56,7 +56,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def do_PUT(self):
         """
-        Handle the PUT requests, serving the previously uploaded content.
+        Handle the PUT requests.
         """
         """Serve the previously uploaded content."""
         self.store_request(self.path, "PUT")
@@ -67,6 +67,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         Handle the POST requests.
         """
         if "mock_configurations" in self.path:
+            """Store the response to be served in the path specified."""
             resource = self.path.replace("/mock_configurations", "")
             self.store_response(resource)
 
