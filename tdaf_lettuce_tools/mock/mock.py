@@ -184,8 +184,8 @@ class RequestHandler(BaseHTTPRequestHandler):
         """Get the requests and responses queues."""
         try:
             body = dict()
-            body.update({"requests": self.responses_qeues})
-            body.update({"responses": self.requests_qeues})
+            body.update({"requests": self.requests_qeues})
+            body.update({"responses": self.responses_qeues})
             self.wfile.write(json.dumps(body))
         except:
             self.send_response(500)
@@ -194,8 +194,8 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def empty_queues(self):
         """Empty the requests and responses queues."""
-        self.responses_qeues = dict()
-        self.requests_qeues = dict()
+        self.requests_qeues.clear()
+        self.responses_qeues.clear()
         self.send_response(204)
         self.end_headers()
 
