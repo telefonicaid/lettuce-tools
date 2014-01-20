@@ -60,9 +60,16 @@ class DatasetUtils(object):
                     length = int(param[1:-1].split("JSON_WITH_LENGTH_")[1])
                     param = dict((str(x), str(x)) for x in xrange(length))
                 else:
-                    seeds = {'STRING': 'a', 'INTEGER': 1}
-                    seed, length = param[1:-1].split("_WITH_LENGTH_")
-                    param = seeds[seed] * int(length)
+                    seeds = {'STRING': 'a', 'INTEGER': "1"}
+                    # The chain to be generated can be just a part of param
+                    start = param.find("[")
+                    end = param.find("]")
+                    seed, length = param[start + 1:end].split("_WITH_LENGTH_")
+                    generated_part = seeds[seed] * int(length)
+                    placeholder = "[" + seed + "_WITH_LENGTH_" + length + "]"
+                    param = param.replace(placeholder, generated_part)
+                    if seed is "INTEGER":
+                        param = int(param)
         finally:
             return param
 
