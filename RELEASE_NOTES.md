@@ -24,7 +24,7 @@ v0.0.4
 v0.0.3
 ------
 
-#### Lettucetdaf
+#### Lettuce_tools
 
 * *Bug*: Fixed some cases where unexpected features would be executed because of the coincidence between its filename and path
 * *New feature*: Added some metrics (US total number, TC total number, TCs per US)
@@ -41,7 +41,7 @@ v0.0.3
 v0.0.2
 ------
 
-#### Lettucetdaf
+#### Lettuce_tools
 
 * *Improvement*: Added a way to define the features to execute
 * *Improvement*: Make jirasync only execute for features and epics selected in arguments

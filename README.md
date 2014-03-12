@@ -1,4 +1,4 @@
-TDAF Lettuce Tools
+Lettuce Tools
 ==========
 
 TDAF Lettuce Tools are a set of tools and utilities that extend the lettuce out of the box features fill some of the gaps detected in the projects.
@@ -17,9 +17,9 @@ Lettuce Tools are composed by the following modules:
 
 To use jirasync copy the vanilla file to your .features files root path and configure in it the values for your user and project. Then run "python jirasync.py". jirasync can also be invoked with the path of a folder as its main argument. In that case, only the .feature files of that folder and its sub-folders will be processed.
 
-### Lettucetdaf
+### Lettuce_Tools
 
-* **lettucetdaf** is a lettuce wrapper that enables different executions of test depending on the input parameters.
+* **lettuce_tools** is a lettuce wrapper that enables different executions of test depending on the input parameters.
 * **check_results** parses xunit lettuce output and process result to generate QA metrics
 
 ### Log_checking
