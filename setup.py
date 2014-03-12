@@ -8,14 +8,14 @@ basepath = os.path.dirname(os.path.abspath(__file__))
 packages = find_packages(basepath)
 
 setup(
-    name='tdaf_lettuce_tools',
+    name='lettuce_tools',
     version='0.0.6-alpha',
-    author='rafaelh, pge354',
-    author_email='rafaelh@pdi.es, pge@grupoinnovati.com',
+    author='rafaelh, pge354, arobres, sdmt',
+    author_email='rafaelh@pdi.es, pge@grupoinnovati.com, sdmt@tid.es',
     url='',
-    description='TDAF Lettuce Tools',
+    description='Lettuce Tools',
     packages=packages,
     entry_points={
-        'console_scripts': ['lettucetdaf = tdaf_lettuce_tools.lettucetdaf.lettucetdaf:main'],
+        'console_scripts': ['lettuce_tools = lettuce_tools.lettuce_tools.lettuce_tools:main'],
         },
     install_requires=['colorama==0.2.5', 'argparse==1.2.1'])
