@@ -1,7 +1,7 @@
 Lettuce Tools
 ==========
 
-TDAF Lettuce Tools are a set of tools and utilities that extend the lettuce out of the box features fill some of the gaps detected in the projects.
+Lettuce Tools are a set of tools and utilities that extend the lettuce out of the box features fill some of the gaps detected in the projects.
 
 To create a dependency in your project requirements to install it througth pip add the following line to your file:
 
@@ -30,7 +30,7 @@ It can also search for a specific log entry that matches a set of given paramete
 
 ### Mock
 
-* **mock** is a module that can be used in the acceptance tests of any TDAF application, as long as they are developed with Lettuce, to implement a configurable http REST mock. 
+* **mock** is a module that can be used in the acceptance tests of any server application, as long as they are developed with Lettuce, to implement a configurable http REST mock. 
 
 Its main features are: configure a response on a given endpoint, serve configured responses, maintains checkable list of requests and responses. 
 
