@@ -5,7 +5,7 @@ Lettuce Tools are a set of tools and utilities that extend the lettuce out of th
 
 To create a dependency in your project requirements to install it througth pip add the following line to your file:
 
-	git+https://visitor:visitor@pdihub.hi.inet/TDAF/tdaf-lettuce-tools.git@develop#egg=tdaf_lettuce_tools
+	git+https://github.com/telefonicaid/lettuce-tools.git#egg=lettuce_tools
 
 To install it manually, clone the repository and run "python setup.py install". That will install the TDAF Lettuce tools in your python environment.
 	
