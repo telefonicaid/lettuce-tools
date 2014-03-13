@@ -9,9 +9,9 @@ packages = find_packages(basepath)
 
 setup(
     name='lettuce_tools',
-    version='0.0.6-alpha',
+    version='0.1',
     author='rafaelh, pge354, arobres, sdmt',
-    author_email='rafaelh@pdi.es, pge@grupoinnovati.com, sdmt@tid.es',
+    author_email='',
     url='',
     description='Lettuce Tools',
     packages=packages,
