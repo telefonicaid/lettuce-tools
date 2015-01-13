@@ -29,14 +29,14 @@ def execute_test(path, xunit_file, tags):
     #lettucelaunch(["--with-xunit", "--xunit-file=" + xunit_file, path])
 
 
-def run_tests(test_type, epics, features, formatedtime, jirasync, tags):
+def run_tests(test_type, suite_dir, epics, features, formatedtime, jirasync, tags):
     """
     Iterate through directory and execute given testsuites, epics and features
     with or without jira synchronization.
     """
     print("Running %s Tests" % test_type)
     print features
-    for root, dirs, list_files in os.walk("./" + test_type + "/"):
+    for root, dirs, list_files in os.walk("./" + suite_dir + test_type + "/"):
         for files in list_files:
             if files.endswith(".feature"):
                 for epic in epics:
@@ -67,6 +67,7 @@ def main(args=sys.argv[1:]):
                         default="dev")
     parser.add_argument("-ts", "--testsuite", help="Selects the testsuite", default="all", \
                         choices=["comp", "int", "e2e", "all"])
+    parser.add_argument("-sd", "--suitedir", help="Base dir path for testsuites in the project hierarchy", default="./")
     parser.add_argument("-tm", "--timestamp", help="Stores the results in timestamped folders", action="store_true")
     args = parser.parse_args()
 
@@ -91,15 +92,18 @@ def main(args=sys.argv[1:]):
         copyfile("./settings/" + args.environment + "-properties.json", "./properties.json")  # Get env properties
     if args.features:
         features = args.features.split(",")  # Features to be executed
+    if args.suitedir:
+        # Parent directory where testsuites (comp, e2e, int) are located in the test project hierarchy. Default = "./"
+        suite_dir = args.suitedir + "/" if args.suitedir[-1] != "/" else args.suitedir
 
-    if  ("comp" in args.testsuite or "all" in args.testsuite):  # Execute components testsuite
-            run_tests("component", epics, features, timestamp, jirasync, tags)
+    if "comp" in args.testsuite or "all" in args.testsuite:  # Execute components testsuite
+            run_tests("component", suite_dir, epics, features, timestamp, jirasync, tags)
 
-    if  ("e2e" in args.testsuite or "all"in args.testsuite):  # Execute e2e testsuite
-            run_tests("e2e", epics, features, timestamp, jirasync, tags)
+    if "e2e" in args.testsuite or "all" in args.testsuite:  # Execute e2e testsuite
+            run_tests("e2e", suite_dir, epics, features, timestamp, jirasync, tags)
 
-    if  ("int" in args.testsuite or "all"in args.testsuite):  # Execute integration testsuite
-            run_tests("integration", epics, features, timestamp, jirasync, tags)
+    if "int" in args.testsuite or "all" in args.testsuite:  # Execute integration testsuite
+            run_tests("integration", suite_dir, epics, features, timestamp, jirasync, tags)
 
     try:
         failures = ResultChecker(timestamp).get_results()  # Create lettuce reports
